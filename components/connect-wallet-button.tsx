@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "./ui/button";
 import { useSDK } from "@metamask/sdk-react";
-import { AccountInfo } from "./AccountInfo";
+import { AccountInfo } from "./account-info";
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 
