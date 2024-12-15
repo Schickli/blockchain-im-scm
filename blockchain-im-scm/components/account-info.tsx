@@ -33,7 +33,7 @@ export function AccountInfo({
       if (!id) return "Unknown Chain";
       idNumber = parseInt(id);
     } catch (e) {
-      return "Unknown Chain";
+      return "Unknown Chain:" + e;
     }
 
     const chains: { [key: number]: string } = {

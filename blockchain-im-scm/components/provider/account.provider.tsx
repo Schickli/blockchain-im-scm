@@ -15,7 +15,7 @@ export const useAccount = () => {
   return context;
 };
 
-export const AccountProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+export const AccountProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<string>();
 
   return (

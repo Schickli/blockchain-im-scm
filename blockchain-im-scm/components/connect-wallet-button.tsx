@@ -26,7 +26,7 @@ export const ConnectWalletButton = () => {
       }
     };
     checkConnection();
-  }, [sdk]);
+  }, [sdk, setAccount]);
 
   const connect = async () => {
     try {

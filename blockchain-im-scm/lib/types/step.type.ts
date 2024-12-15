@@ -1,7 +1,8 @@
-type Step = {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export type Step = {
     id: number;
     title: string;
-    icon: any;
+    icon: any; 
     action: {
         cta: string;
         loading: {
@@ -15,3 +16,4 @@ type Step = {
         action: (element: any) => Promise<boolean>;
     };
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */

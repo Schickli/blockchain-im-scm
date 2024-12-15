@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ShoppingCart, CreditCard, Package } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ShoppingCart, CreditCard, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,6 +16,8 @@ import PaymentStep from "./payment-step";
 import LoadingStep from "./loading-step";
 import ConfirmationStep from "./confirmation-step";
 import SuccessStep from "./sucess-step";
+import { Product } from "@/lib/types/product.type";
+import { Step } from "@/lib/types/step.type";
 
 const order = async (product: Product) => {
   console.log("Ordering product", product);
@@ -110,7 +111,7 @@ export default function OrderStepper() {
 
   const handleAction = async () => {
     setIsLoading(true);
-    let result = await currentStep.action.action(selectedProduct);
+    const result = await currentStep.action.action(selectedProduct);
     setIsLoading(false);
 
     if (result) {

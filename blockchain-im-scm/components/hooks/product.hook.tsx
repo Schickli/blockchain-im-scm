@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import useProductContract from "./contract.hook";
+// import { useEffect, useState } from "react";
+// import useProductContract from "./contract.hook";
 
 
 // TODO: Implement all the necessary functions to interact with the contract
