@@ -102,7 +102,7 @@ export function AccountInfo({
             asChild
           >
             <a
-              href={`https://etherscan.io/address/${account}`}
+              href={`https://sepolia.etherscan.io/address/${account}`}
               target="_blank"
               rel="noopener noreferrer"
             >
