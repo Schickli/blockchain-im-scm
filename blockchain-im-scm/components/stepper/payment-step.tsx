@@ -1,3 +1,5 @@
+import { Product } from "@/lib/types/product.type";
+
 interface PaymentStepProps {
   selectedProduct: Product;
 }
