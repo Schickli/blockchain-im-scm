@@ -15,19 +15,17 @@ export function InfoPanel() {
         </p>
         <ul className="list-disc pl-5 space-y-2">
           <li>Ein Next.js-Frontend, das mit MetaMask-Integration entwickelt wurde. Benutzer können hier Bestellungen aufgeben und den Status verfolgen.</li>
-          <li>Ein Backend, das Transaktionen auf der Blockchain ausführt und den Bestellstatus aktualisiert. Dafür werden intelligente Verträge eingesetzt.</li>
-          <li>Die visuelle Oberfläche nutzt das Tailwind CSS-Framework und Komponenten aus der Shadcn-Bibliothek für ein modernes und benutzerfreundliches Design.</li>
+          <li>Die erstellung eines Smart Contracts und veröffentlichen</li>
+          <li>Ausführung von Transaktionen mit dem Smart Contract</li>
+
         </ul>
         <p className="font-semibold mt-6">Der Ablauf sieht folgendermaßen aus:</p>
         <ol className="list-decimal pl-5 space-y-2">
           <li>Ein Autohersteller stellt eine Bestellung bei einem Zulieferer über das Frontend.</li>
-          <li>Das Backend erstellt einen intelligenten Vertrag auf der Sepolia-Blockchain, der die Bestellung und deren Status verwaltet.</li>
-          <li>Der Zulieferer kann den Bestellstatus über das Frontend einsehen und bei Zahlungseingang die Auslieferung auslösen.</li>
+          <li>Dies wird im Vertag vermerkt.</li>
+          <li>Der Zulieferer kann den Bestellstatus über den Adminbereich einsehen und bei Zahlungseingang die Auslieferung auslösen.</li>
           <li>Der Sendungsstatus wird auf der Blockchain aktualisiert, sodass der Autohersteller den Fortschritt verfolgen kann.</li>
         </ol>
-        <p className="mt-6">
-          Durch die Verwendung der Blockchain-Technologie entsteht eine transparente und verlässliche Lieferkette, die für alle Beteiligten einsehbar ist. Das reduziert Reibungsverluste und erhöht die Effizienz des gesamten Prozesses.
-        </p>
       </div>
     </div>
   </Card>
