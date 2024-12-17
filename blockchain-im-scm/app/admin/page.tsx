@@ -31,11 +31,6 @@ export default function AdminDashboard() {
     );
   };
 
-  const counts = orders.reduce((acc, order) => {
-    acc[order.status] = (acc[order.status] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-
   return (
     <div className="min-h-screen bg-gray-50 pt-0 p-8">
       <NavBar linkTo={"/"} ctaName={"User"} />

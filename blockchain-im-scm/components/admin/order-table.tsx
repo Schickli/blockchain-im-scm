@@ -12,7 +12,6 @@ import { StatusBadge } from "./status-badge";
 import { ViewStatusDialog } from "./update-status-dialog";
 import { AdminOrderStatus } from "@/lib/types/admin-order-status.type";
 import { Order } from "@/lib/types/admin-order.type";
-import { Card } from "../ui/card";
 
 interface OrderTableProps {
   orders: Order[];
