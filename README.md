@@ -5,8 +5,8 @@ Der Prototyp simuliert verschiedene Szenarien in einer globalen Lieferkette, um 
 
 ## Verwendete Technologien
 
-### Frontend: Node.js mit TailwindCSS und ShadCN
-Node.js ermöglicht eine serverseitige JavaScript-Umgebung und bietet eine leistungsfähige Plattform für die Entwicklung von Webanwendungen und APIs. Es unterstützt Echtzeitkommunikation und ermöglicht die einfache Skalierung von Anwendungen. TailwindCSS und ShadCN sind CSS-Frameworks, die eine schnelle und anpassbare Erstellung von Designs ermöglichen, ohne tiefgehende CSS-Kenntnisse zu benötigen. Sie sorgen für ein modernes und responsives Benutzererlebnis durch eine einfache und konsistente Klassennamen-Nutzung.
+### Frontend: Next.js mit TailwindCSS und ShadCN
+Mit Next.js lassen sich schnell Webapps entwickeln. TailwindCSS und ShadCN sind CSS-Frameworks, die eine schnelle und anpassbare Erstellung von Designs ermöglichen, ohne tiefgehende CSS-Kenntnisse zu benötigen. Sie sorgen für ein modernes und responsives Benutzererlebnis durch eine einfache und konsistente Klassennamen-Nutzung.
 
 ### Smart Contract: Solidity
 Solidity ist eine statische, typisierte Programmiersprache speziell für die Erstellung von Smart Contracts auf der Ethereum-Blockchain. Es ermöglicht die sichere Implementierung und Verwaltung von dezentralen Transaktionen und wird für seine Sicherheits- und Performanzeigenschaften geschätzt. Mit Solidity können Entwickler komplexe Geschäftslogiken in Smart Contracts abbilden, die auf der Ethereum-Blockchain ausgeführt werden und so eine Verlässlichkeit in Transaktionen gewährleisten.
