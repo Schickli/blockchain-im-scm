@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "npx hardhat compile"
+    "deploy": "npx hardhat run deployments/deploy.js --network sepolia"
   },
-  "author": "",
+  "author": "Maurin Schickli",
   "license": "ISC",
   "description": "",
   "devDependencies": {
