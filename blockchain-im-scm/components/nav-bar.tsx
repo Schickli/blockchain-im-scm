@@ -4,7 +4,12 @@ import { ConnectWalletButton } from "./connect-wallet-button";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-export const NavBar = () => {
+interface NavBarProps {
+  linkTo: string;
+  ctaName: string;
+}
+
+export const NavBar = ({linkTo, ctaName}: NavBarProps) => {
   return (
     <nav className="flex items-center justify-between max-w-screen-xl px-6 mx-auto py-7 rounded-xl">
       <Link href="/" className="flex gap-1 px-6">
@@ -13,9 +18,9 @@ export const NavBar = () => {
         </span>
       </Link>
       <div className="flex gap-4 px-6">
-        <Link href="/admin" className="flex gap-1 px-6">
-          <Button variant={"outline"}>Admin Interface</Button>
-        </Link>
+      <Link href={linkTo} passHref>
+        <Button variant={"outline"}>{ctaName}</Button>
+      </Link>
         <ConnectWalletButton />
       </div>
     </nav>

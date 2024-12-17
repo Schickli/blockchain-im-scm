@@ -18,6 +18,7 @@ import ConfirmationStep from "./confirmation-step";
 import SuccessStep from "./sucess-step";
 import { Product } from "@/lib/types/product.type";
 import { Step } from "@/lib/types/step.type";
+import { products } from "@/lib/types/product.type";
 
 const order = async (product: Product) => {
   console.log("Ordering product", product);
@@ -96,12 +97,6 @@ const steps = [
     },
   },
 ] as Step[];
-
-const products = [
-  { id: 1, name: "Senkkopfschraube", price: 2.0, quantity: 1 },
-  { id: 2, name: "Sechskantschraube", price: 1.0, quantity: 1 },
-  { id: 3, name: "Flachkopfschraube", price: 4.0, quantity: 1 },
-] as Product[];
 
 export default function OrderStepper() {
   const [currentStep, setCurrentStep] = useState<Step>(steps[0]);

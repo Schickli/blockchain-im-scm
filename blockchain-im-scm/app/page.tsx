@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <>
-      <NavBar />
+      <NavBar linkTo={"/admin"} ctaName={"Admin"} />
       <div className="max-w-screen-xl mx-auto px-12">
         {connected && account && <OrderStepper />}
         <InfoPanel />
