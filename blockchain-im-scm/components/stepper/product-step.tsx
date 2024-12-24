@@ -49,7 +49,7 @@ export default function ProductStep({
           <SelectContent>
             {products.map((product) => (
               <SelectItem key={product.id} value={product.id.toString()}>
-                {product.name} - ${product.price.toFixed(2)}
+                {product.name} - {product.price} Wei
               </SelectItem>
             ))}
           </SelectContent>

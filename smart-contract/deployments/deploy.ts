@@ -1,20 +1,18 @@
 async function main() {
-  // Ignore type error
-  const HelloWorld = await ethers.getContractFactory("HelloWorld");
-
-  // Deploy den Contract mit den Constructor-Argumenten
-  const helloWorld = await HelloWorld.deploy("Hello World!");
-
-  // Warte, bis der Deployment-Vorgang abgeschlossen ist
-  await helloWorld.deployed();
-
-  // Zeige die Adresse des Deployments
-  console.log("Contract deployed to address:", helloWorld.address);
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error("Error deploying contract:", error);
-    process.exit(1);
-  });
+    // Ignore type error
+    const Orders = await ethers.getContractFactory("OrderManagement");
+  
+    const orders = await Orders.deploy();
+  
+    await orders.deployed();
+  
+    console.log("Contract deployed to address:", orders.address);
+  }
+  
+  main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error("Error deploying contract:", error);
+      process.exit(1);
+    });
+  

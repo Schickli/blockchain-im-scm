@@ -7,6 +7,7 @@ import NavBar from "@/components/nav-bar";
 import { AdminOrderStatus } from "@/lib/types/admin-order-status.type";
 import { Order } from "@/lib/types/admin-order.type";
 import { products } from "@/lib/types/product.type";
+import { useProduct } from "@/components/hooks/product.hook";
 
 // Replace this with your actual data from the Smart Contract
 const initialOrders: Order[] = [
@@ -19,16 +20,10 @@ const initialOrders: Order[] = [
 ];
 
 export default function AdminDashboard() {
-  const [orders, setOrders] = useState(initialOrders);
+  const { orders } = useProduct();
 
   const handleUpdateStatus = (orderId: string, newStatus: AdminOrderStatus) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId
-          ? { ...order, status: newStatus, timestamp: new Date().toISOString() }
-          : order
-      )
-    );
+    
   };
 
   return (
