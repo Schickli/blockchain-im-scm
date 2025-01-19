@@ -10,41 +10,37 @@ import { Product } from "@/lib/types/product.type";
 import { useContract } from "@/components/hooks/contract.hook";
 
 export default function AdminDashboard() {
-  const { contract, loading: contractLoading, error } = useContract();
+  const { contract } = useContract();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const onUpdateStatus = async (orderId: string, status: AdminOrderStatus) => {
+  const onUpdateStatus = async () => {};
 
-  }
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const parseOrders = (rawOrders: any[]): Order[] => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return rawOrders.map((rawOrder: any) => {
-      const [
-        rawId,
-        rawProduct,
-        rawStatus,
-        rawTimestamp
-      ] = rawOrder;
+      const [rawId, rawProduct, rawStatus, rawTimestamp] = rawOrder;
 
       const product: Product = {
         id: rawProduct[0].toString(),
         name: rawProduct[1],
-        price: Number(rawProduct[2]), 
-        quantity: Number(rawProduct[3]) 
+        price: Number(rawProduct[2]),
+        quantity: Number(rawProduct[3]),
       };
 
       const order: Order = {
         id: rawId,
         product,
-        status: parseStatus(rawStatus), 
-        timestamp: new Date(Number(rawTimestamp) * 1000).toISOString()
+        status: parseStatus(rawStatus),
+        timestamp: new Date(Number(rawTimestamp) * 1000).toISOString(),
       };
 
       return order;
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const parseStatus = (rawStatus: any): AdminOrderStatus => {
     switch (Number(rawStatus)) {
       case 0:
@@ -69,6 +65,7 @@ export default function AdminDashboard() {
 
     setLoading(true);
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const rawOrders: any[] = await contract.getAllOrders();
       const parsedOrders = parseOrders(rawOrders).reverse();
       setOrders(parsedOrders);
@@ -96,7 +93,11 @@ export default function AdminDashboard() {
             <CardTitle>Order Management</CardTitle>
           </CardHeader>
           <CardContent>
-            <OrderTable orders={orders} loading={loading} onUpdateStatus={onUpdateStatus}/>
+            <OrderTable
+              orders={orders}
+              loading={loading}
+              onUpdateStatus={onUpdateStatus}
+            />
           </CardContent>
         </Card>
       </div>

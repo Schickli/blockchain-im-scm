@@ -8,6 +8,7 @@ const CONTRACT_ADDRESS = "0xC13AF64C19e854dE1a8c444341df7b1651315e10";
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ethereum: any;
   }
 }
@@ -32,6 +33,7 @@ export const useContract = () => {
         const signer = await provider.getSigner();
         const newContract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
         setContract(newContract);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(err.message || "Failed to initialize contract.");
         console.error("Failed to initialize contract:", err);

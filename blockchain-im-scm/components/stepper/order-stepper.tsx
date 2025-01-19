@@ -25,6 +25,7 @@ import { useOrderContext } from "../provider/order.provider";
 // Actions
 const createOrderAction = async (
   product: Product,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   contract: any,
   setIsLoading: (value: boolean) => void,
   setCurrentOrderId: (orderId: string) => void
@@ -36,7 +37,7 @@ const createOrderAction = async (
 
   try {
     setIsLoading(true);
-    let result = await contract.createOrder(
+    const result = await contract.createOrder(
       product.id,
       product.name,
       product.price,
@@ -44,10 +45,11 @@ const createOrderAction = async (
     );
     console.log("Order created successfully.", result);
 
-    let receipt = await result.wait();
+    const receipt = await result.wait();
     console.log("Transaction mined:", receipt);
 
     const orderCreatedEvent = receipt.events?.find(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (event: any) => event.event === "OrderCreated"
     );
 
@@ -164,7 +166,7 @@ export default function OrderStepper() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
-  const { currentOrderId, setCurrentOrderId } = useOrderContext();
+  const { setCurrentOrderId } = useOrderContext();
 
   const handleAction = async () => {
     setIsLoading(true);
