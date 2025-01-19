@@ -18,28 +18,80 @@ import ConfirmationStep from "./confirmation-step";
 import SuccessStep from "./sucess-step";
 import { Product, products } from "@/lib/types/product.type";
 import { Step } from "@/lib/types/step.type";
-import { useProduct } from "../hooks/product.hook";
+import { useContract } from "../hooks/contract.hook";
+import ErrorStep from "./error-step";
+import { useOrderContext } from "../provider/order.provider";
+
+// Actions
+const createOrderAction = async (
+  product: Product,
+  contract: any,
+  setIsLoading: (value: boolean) => void,
+  setCurrentOrderId: (orderId: string) => void
+): Promise<boolean> => {
+  if (!contract) {
+    console.error("Contract not initialized.");
+    return false;
+  }
+
+  try {
+    setIsLoading(true);
+    let result = await contract.createOrder(
+      product.id,
+      product.name,
+      product.price,
+      product.quantity
+    );
+    console.log("Order created successfully.", result);
+
+    let receipt = await result.wait();
+    console.log("Transaction mined:", receipt);
+
+    const orderCreatedEvent = receipt.events?.find(
+      (event: any) => event.event === "OrderCreated"
+    );
+
+    if (!orderCreatedEvent) {
+      console.error("OrderCreated event not found");
+      return false;
+    }
+
+    const orderId = orderCreatedEvent.args?.orderId;
+    console.log("Order ID:", orderId);
+    setCurrentOrderId(orderId.toString());
+
+    return true;
+  } catch (err) {
+    console.error("Error placing order:", err);
+    return false;
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const paymentAction = async (
+  product: Product,
+  setIsLoading: (value: boolean) => void
+): Promise<boolean> => {
+  console.log("Paying for product:", product);
+  setIsLoading(true);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  setIsLoading(false);
+  return true;
+};
+
+const confirmReceiptAction = async (
+  product: Product,
+  setIsLoading: (value: boolean) => void
+): Promise<boolean> => {
+  console.log(`Receipt confirmed for product: ${product.name}`);
+  setIsLoading(true);
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  setIsLoading(false);
+  return true;
+};
 
 export default function OrderStepper() {
-  const { createOrder } = useProduct();
-
-  const order = async (product: Product) => {
-    await createOrder(product.id, product.name, product.price, product.quantity);
-    return true;
-  };
-
-  const pay = async (product: Product) => {
-    console.log("Pay", product);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    return true;
-  };
-
-  const received = async (product: Product) => {
-    console.log("Received", product);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    return true;
-  };
-
   const steps = [
     {
       id: 1,
@@ -47,7 +99,8 @@ export default function OrderStepper() {
       icon: ShoppingCart,
       action: {
         cta: "Bestellen",
-        action: order,
+        action: (product: Product) =>
+          createOrderAction(product, contract, setIsLoading, setCurrentOrderId),
         loading: {
           title: "Bestellung wird verarbeitet",
           description:
@@ -66,7 +119,7 @@ export default function OrderStepper() {
       icon: CreditCard,
       action: {
         cta: "Zahlen",
-        action: pay,
+        action: (product: Product) => paymentAction(product, setIsLoading),
         loading: {
           title: "Zahlung wird durchgeführt",
           description:
@@ -85,7 +138,8 @@ export default function OrderStepper() {
       icon: Package,
       action: {
         cta: "Bestätigen",
-        action: received,
+        action: (product: Product) =>
+          confirmReceiptAction(product, setIsLoading),
         loading: {
           title: "Daten werden übermittelt",
           description:
@@ -100,10 +154,17 @@ export default function OrderStepper() {
     },
   ] as Step[];
 
+  const {
+    contract,
+    loading: contractLoading,
+    error: contractError,
+  } = useContract();
   const [currentStep, setCurrentStep] = useState<Step>(steps[0]);
   const [selectedProduct, setSelectedProduct] = useState<Product>(products[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const { currentOrderId, setCurrentOrderId } = useOrderContext();
 
   const handleAction = async () => {
     setIsLoading(true);
@@ -114,6 +175,10 @@ export default function OrderStepper() {
       setIsSuccess(true);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setIsSuccess(false);
+    } else {
+      setIsError(true);
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setIsError(false);
     }
 
     if (result && currentStep.id < steps.length) {
@@ -126,6 +191,18 @@ export default function OrderStepper() {
   return (
     <Card className="w-full mb-8 rounded-lg overflow-hidden relative">
       <div className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2" />
+      {contractLoading && (
+        <LoadingStep
+          title="Smart Contract wird initialisiert"
+          description="Bitte warten, während wir die Verbindung zur Blockchain herstellen."
+        />
+      )}
+      {contractError && (
+        <ErrorStep
+          title="Fehler beim Laden des Smart Contracts"
+          description={contractError}
+        />
+      )}
       {isLoading && (
         <LoadingStep
           title={currentStep.action.loading.title}
@@ -138,8 +215,14 @@ export default function OrderStepper() {
           description={currentStep.action.success.description}
         />
       )}
+      {isError && (
+        <ErrorStep
+          title="Fehler bei der Kommunikation mit dem Smart Contract"
+          description="Es ist bei der Kommunkation mit dem Smart Contract ein Fehler aufgetreten. Bitte versuche es später erneut."
+        />
+      )}
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-2xl font-bold">Order Process</CardTitle>
+        <CardTitle className="text-2xl font-bold">Bestell Prozess</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex justify-around mb-8">
@@ -164,7 +247,14 @@ export default function OrderStepper() {
         {currentStep.id === 3 && <ConfirmationStep />}
       </CardContent>
       <CardFooter className="flex justify-end">
-        <Button onClick={handleAction}>{currentStep.action.cta}</Button>
+        <Button
+          onClick={handleAction}
+          disabled={contractLoading || isLoading || !contract}
+        >
+          {contractLoading || isLoading || !contract
+            ? "Bitte warten..."
+            : currentStep.action.cta}
+        </Button>
       </CardFooter>
     </Card>
   );

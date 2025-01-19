@@ -1,30 +1,90 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrderTable } from "../../components/admin/order-table";
 import NavBar from "@/components/nav-bar";
 import { AdminOrderStatus } from "@/lib/types/admin-order-status.type";
 import { Order } from "@/lib/types/admin-order.type";
-import { products } from "@/lib/types/product.type";
-import { useProduct } from "@/components/hooks/product.hook";
-
-// Replace this with your actual data from the Smart Contract
-const initialOrders: Order[] = [
-  {
-    id: "x02s4d12d34s45sdf23d24h1t23",
-    product: products[0],
-    status: AdminOrderStatus.Ordered,
-    timestamp: new Date().toISOString(),
-  },
-];
+import { Product } from "@/lib/types/product.type";
+import { useContract } from "@/components/hooks/contract.hook";
 
 export default function AdminDashboard() {
-  const { orders } = useProduct();
+  const { contract, loading: contractLoading, error } = useContract();
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleUpdateStatus = (orderId: string, newStatus: AdminOrderStatus) => {
-    
+  const onUpdateStatus = async (orderId: string, status: AdminOrderStatus) => {
+
+  }
+
+  const parseOrders = (rawOrders: any[]): Order[] => {
+    return rawOrders.map((rawOrder: any) => {
+      const [
+        rawId,
+        rawProduct,
+        rawStatus,
+        rawTimestamp
+      ] = rawOrder;
+
+      const product: Product = {
+        id: rawProduct[0].toString(),
+        name: rawProduct[1],
+        price: Number(rawProduct[2]), 
+        quantity: Number(rawProduct[3]) 
+      };
+
+      const order: Order = {
+        id: rawId,
+        product,
+        status: parseStatus(rawStatus), 
+        timestamp: new Date(Number(rawTimestamp) * 1000).toISOString()
+      };
+
+      return order;
+    });
   };
+
+  const parseStatus = (rawStatus: any): AdminOrderStatus => {
+    switch (Number(rawStatus)) {
+      case 0:
+        return AdminOrderStatus.Ordered;
+      case 1:
+        return AdminOrderStatus.Producing;
+      case 2:
+        return AdminOrderStatus.WaitingOnPayment;
+      case 3:
+        return AdminOrderStatus.Shipping;
+      case 4:
+        return AdminOrderStatus.Delivered;
+      case 5:
+        return AdminOrderStatus.Cancelled;
+      default:
+        throw new Error(`Unknown status code: ${rawStatus}`);
+    }
+  };
+
+  const getAllOrders = useCallback(async () => {
+    if (!contract) return;
+
+    setLoading(true);
+    try {
+      const rawOrders: any[] = await contract.getAllOrders();
+      const parsedOrders = parseOrders(rawOrders).reverse();
+      setOrders(parsedOrders);
+      console.log("Fetched and parsed orders:", parsedOrders);
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [contract]);
+
+  useEffect(() => {
+    if (contract) {
+      getAllOrders();
+    }
+  }, [contract, getAllOrders]);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-0 p-8">
@@ -36,7 +96,7 @@ export default function AdminDashboard() {
             <CardTitle>Order Management</CardTitle>
           </CardHeader>
           <CardContent>
-            <OrderTable orders={orders} onUpdateStatus={handleUpdateStatus} />
+            <OrderTable orders={orders} loading={loading} onUpdateStatus={onUpdateStatus}/>
           </CardContent>
         </Card>
       </div>

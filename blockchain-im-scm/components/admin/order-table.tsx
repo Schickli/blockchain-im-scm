@@ -12,15 +12,21 @@ import { StatusBadge } from "./status-badge";
 import { ViewStatusDialog } from "./update-status-dialog";
 import { AdminOrderStatus } from "@/lib/types/admin-order-status.type";
 import { Order } from "@/lib/types/admin-order.type";
-import { useProduct } from "../hooks/product.hook";
 
 interface OrderTableProps {
   orders: Order[] | null;
   onUpdateStatus: (orderId: string, newStatus: AdminOrderStatus) => void;
+  loading: boolean;
 }
 
-export function OrderTable({ orders, onUpdateStatus }: OrderTableProps) {
+export function OrderTable({
+  orders,
+  onUpdateStatus,
+  loading,
+}: OrderTableProps) {
   return (
+    <>
+      {loading && <p>Loading...</p>}
       <Table className="">
         <TableHeader>
           <TableRow>
@@ -42,7 +48,7 @@ export function OrderTable({ orders, onUpdateStatus }: OrderTableProps) {
               </TableCell>
               <TableCell>{order.timestamp}</TableCell>
               <TableCell>
-                ${order.product.quantity * order.product.price}
+                {order.product.quantity * order.product.price} Wei
               </TableCell>
               <TableCell>
                 <ViewStatusDialog
@@ -55,5 +61,6 @@ export function OrderTable({ orders, onUpdateStatus }: OrderTableProps) {
           ))}
         </TableBody>
       </Table>
+    </>
   );
 }
