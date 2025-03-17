@@ -184,6 +184,7 @@ export default function OrderStepper() {
     }
 
     if (result && currentStep.id < steps.length) {
+    // if (currentStep.id < steps.length) {
       setCurrentStep(steps[currentStep.id]);
     } else {
       setCurrentStep(steps[0]);
@@ -199,12 +200,12 @@ export default function OrderStepper() {
           description="Bitte warten, während wir die Verbindung zur Blockchain herstellen."
         />
       )}
-      {contractError && (
+      {/* {contractError && (
         <ErrorStep
           title="Fehler beim Laden des Smart Contracts"
           description={contractError}
         />
-      )}
+      )} */}
       {isLoading && (
         <LoadingStep
           title={currentStep.action.loading.title}
@@ -217,12 +218,12 @@ export default function OrderStepper() {
           description={currentStep.action.success.description}
         />
       )}
-      {isError && (
+      {/* {isError && (
         <ErrorStep
           title="Fehler bei der Kommunikation mit dem Smart Contract"
           description="Es ist bei der Kommunkation mit dem Smart Contract ein Fehler aufgetreten. Bitte versuche es später erneut."
         />
-      )}
+      )} */}
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-2xl font-bold">Bestell Prozess</CardTitle>
       </CardHeader>
