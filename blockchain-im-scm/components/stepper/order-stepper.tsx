@@ -19,7 +19,6 @@ import SuccessStep from "./sucess-step";
 import { Product, products } from "@/lib/types/product.type";
 import { Step } from "@/lib/types/step.type";
 import { useContract } from "../hooks/contract.hook";
-import ErrorStep from "./error-step";
 import { useOrderContext } from "../provider/order.provider";
 
 // Actions
@@ -159,13 +158,12 @@ export default function OrderStepper() {
   const {
     contract,
     loading: contractLoading,
-    error: contractError,
   } = useContract();
   const [currentStep, setCurrentStep] = useState<Step>(steps[0]);
   const [selectedProduct, setSelectedProduct] = useState<Product>(products[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [setIsError] = useState(false);
   const { setCurrentOrderId } = useOrderContext();
 
   const handleAction = async () => {
@@ -184,7 +182,7 @@ export default function OrderStepper() {
     }
 
     if (result && currentStep.id < steps.length) {
-    // if (currentStep.id < steps.length) {
+      // if (currentStep.id < steps.length) {
       setCurrentStep(steps[currentStep.id]);
     } else {
       setCurrentStep(steps[0]);
