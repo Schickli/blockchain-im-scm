@@ -29,13 +29,13 @@ const createOrderAction = async (
   setIsLoading: (value: boolean) => void,
   setCurrentOrderId: (orderId: string) => void
 ): Promise<boolean> => {
+  setIsLoading(true);
   if (!contract) {
     console.error("Contract not initialized.");
     return false;
   }
 
   try {
-    setIsLoading(true);
     const result = await contract.createOrder(
       product.id,
       product.name,
@@ -47,19 +47,19 @@ const createOrderAction = async (
     const receipt = await result.wait();
     console.log("Transaction mined:", receipt);
 
-    const orderCreatedEvent = receipt.events?.find(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (event: any) => event.event === "OrderCreated"
-    );
+    // const orderCreatedEvent = receipt.events?.find(
+    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //   (event: any) => event.event === "OrderCreated"
+    // );
 
-    if (!orderCreatedEvent) {
-      console.error("OrderCreated event not found");
-      return false;
-    }
+    // if (!orderCreatedEvent) {
+    //   console.error("OrderCreated event not found");
+    //   return false;
+    // }
 
-    const orderId = orderCreatedEvent.args?.orderId;
-    console.log("Order ID:", orderId);
-    setCurrentOrderId(orderId.toString());
+    // const orderId = orderCreatedEvent.args?.orderId;
+    // console.log("Order ID:", orderId);
+    setCurrentOrderId('');
 
     return true;
   } catch (err) {

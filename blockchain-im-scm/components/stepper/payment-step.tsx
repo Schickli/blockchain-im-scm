@@ -2,7 +2,7 @@ import { Product } from "@/lib/types/product.type";
 import { useContract } from "../hooks/contract.hook";
 import { Button } from "../ui/button";
 import { ExternalLink } from "lucide-react";
-import { useOrderContext } from "../provider/order.provider";
+// import { useOrderContext } from "../provider/order.provider";
 
 interface PaymentStepProps {
   selectedProduct: Product;
@@ -10,7 +10,6 @@ interface PaymentStepProps {
 
 export default function PaymentStep({ selectedProduct }: PaymentStepProps) {
   const { CONTRACT_ADDRESS } = useContract();
-  const { currentOrderId } = useOrderContext();
 
   return (
     <div className="flex flex-col justify-center">
@@ -24,10 +23,10 @@ export default function PaymentStep({ selectedProduct }: PaymentStepProps) {
         <p className="font-medium">Produkt:</p>
         <p className="font-bold">{selectedProduct.name}</p>
       </div>
-      <div className="flex items-center gap-2 mt-4">
+      {/* <div className="flex items-center gap-2 mt-4">
         <p className="font-medium">Bestell ID:</p>
         <p className="font-bold">{currentOrderId}</p>
-      </div>
+      </div> */}
       <div className="flex items-center gap-2 mt-4">
         <p className="font-medium">Contract Address</p>
         <p className="font-bold">{CONTRACT_ADDRESS}</p>

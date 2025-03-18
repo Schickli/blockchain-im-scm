@@ -116,7 +116,7 @@ export function ViewStatusDialog({
         <DialogHeader>
           <DialogTitle>Order Status Timeline</DialogTitle>
           <DialogDescription>
-            Current progress for order #{orderId}
+            Current progress for order #{orderId} (This Dialog is not implemented yet and is just a mockup)
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
