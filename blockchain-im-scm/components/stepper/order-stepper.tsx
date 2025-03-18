@@ -163,7 +163,7 @@ export default function OrderStepper() {
   const [selectedProduct, setSelectedProduct] = useState<Product>(products[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [setIsError] = useState(false);
+  // const [isError ,setIsError] = useState(false);
   const { setCurrentOrderId } = useOrderContext();
 
   const handleAction = async () => {
@@ -176,9 +176,9 @@ export default function OrderStepper() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setIsSuccess(false);
     } else {
-      setIsError(true);
+      // setIsError(true);
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      setIsError(false);
+      // setIsError(false);
     }
 
     if (result && currentStep.id < steps.length) {
